@@ -1,6 +1,6 @@
 # pizza_order
 
-A new Flutter project.
+Proyecto Flutter basado en animaciones, tomado del Flutter Challenge de [Diegoveloper](https://www.youtube.com/channel/UCFKZxStYsOVrzdN_FCZ0NGg) 
 
 ## Getting Started
 
