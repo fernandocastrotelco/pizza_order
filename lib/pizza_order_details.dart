@@ -73,29 +73,6 @@ class _PizzaOrderDetailsState extends State<PizzaOrderDetails> {
   }
 }
 
-enum _PizzaSizeValue {
-  s,
-  m,
-  l,
-}
-
-class _PizzaSizeState {
-  _PizzaSizeState(this.value) : factor = _getFactorBySize(value);
-  final _PizzaSizeValue value;
-  final double factor;
-  static double _getFactorBySize(_PizzaSizeValue value) {
-    switch (value) {
-      case _PizzaSizeValue.s:
-        return 0.75;
-      case _PizzaSizeValue.m:
-        return 0.85;
-      case _PizzaSizeValue.l:
-        return 1.0;
-      default:
-        return 1;
-    }
-  }
-}
 
 class _PizzaDetails extends StatefulWidget {
   @override
@@ -107,11 +84,10 @@ class __PizzaDetailsState extends State<_PizzaDetails>
   AnimationController _animationController;
   AnimationController _animationRotationController;
 
-  final _notifierFocused = ValueNotifier(false);
+  
   BoxConstraints _pizzaConstraints;
   List<Animation> _animationList = <Animation>[];
-  final _notifierPizzaSize =
-      ValueNotifier<_PizzaSizeState>(_PizzaSizeState(_PizzaSizeValue.m));
+  
 
   Widget _buildIngredientWidget(Ingredient deletedIngredient) {
     List<Widget> elements = [];
@@ -226,25 +202,25 @@ class __PizzaDetailsState extends State<_PizzaDetails>
         child: DragTarget<Ingredient>(onAccept: (ingredient) {
           print('accept');
 
-          _notifierFocused.value = false;
+          bloc.notifierFocused.value = false;
           bloc.addListIngredient(ingredient);
           _buildIngredientsAnimation();
           _animationController.forward(from: 0.0);
         }, onWillAccept: (ingredient) {
           print('onWillAccept');
 
-          _notifierFocused.value = true;
+          bloc.notifierFocused.value = true;
 
           return !bloc.containsIngredient(ingredient);
         }, onLeave: (ingredient) {
           print('onLeave');
 
-          _notifierFocused.value = false;
+          bloc.notifierFocused.value = false;
         }, builder: (context, list, rejects) {
           return LayoutBuilder(builder: (context, constraints) {
             _pizzaConstraints = constraints;
-            return ValueListenableBuilder<_PizzaSizeState>(
-                valueListenable: _notifierPizzaSize,
+            return ValueListenableBuilder<PizzaSizeState>(
+                valueListenable: bloc.notifierPizzaSize,
                 builder: (context, pizzaSize, _) {
                   return RotationTransition(
                     turns: CurvedAnimation(
@@ -255,7 +231,7 @@ class __PizzaDetailsState extends State<_PizzaDetails>
                       children: [
                         Center(
                           child: ValueListenableBuilder<bool>(
-                              valueListenable: _notifierFocused,
+                              valueListenable: bloc.notifierFocused,
                               builder: (context, focused, _) {
                                 return AnimatedContainer(
                                   duration: const Duration(milliseconds: 400),
@@ -338,8 +314,8 @@ class __PizzaDetailsState extends State<_PizzaDetails>
       const SizedBox(
         height: 15,
       ),
-      ValueListenableBuilder<_PizzaSizeState>(
-          valueListenable: _notifierPizzaSize,
+      ValueListenableBuilder<PizzaSizeState>(
+          valueListenable: bloc.notifierPizzaSize,
           builder: (context, pizzaSize, _) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -347,23 +323,23 @@ class __PizzaDetailsState extends State<_PizzaDetails>
                 PizzaSizeButton(
                   text: 'S',
                   onTap: () {
-                    _updatePizzaSize(_PizzaSizeValue.s);
+                    _updatePizzaSize(PizzaSizeValue.s);
                   },
-                  selected: pizzaSize.value == _PizzaSizeValue.s,
+                  selected: pizzaSize.value == PizzaSizeValue.s,
                 ),
                 PizzaSizeButton(
                   text: 'M',
                   onTap: () {
-                    _updatePizzaSize(_PizzaSizeValue.m);
+                    _updatePizzaSize(PizzaSizeValue.m);
                   },
-                  selected: pizzaSize.value == _PizzaSizeValue.m,
+                  selected: pizzaSize.value == PizzaSizeValue.m,
                 ),
                 PizzaSizeButton(
                   text: 'L',
                   onTap: () {
-                    _updatePizzaSize(_PizzaSizeValue.l);
+                    _updatePizzaSize(PizzaSizeValue.l);
                   },
-                  selected: pizzaSize.value == _PizzaSizeValue.l,
+                  selected: pizzaSize.value == PizzaSizeValue.l,
                 ),
               ],
             );
@@ -378,8 +354,8 @@ class __PizzaDetailsState extends State<_PizzaDetails>
     }
   }
 
-  void _updatePizzaSize(_PizzaSizeValue value) {
-    _notifierPizzaSize.value = _PizzaSizeState(value);
+  void _updatePizzaSize(PizzaSizeValue value) {
+    PizzaOrderProvider.of(context).notifierPizzaSize.value = PizzaSizeState(value);
     _animationRotationController.forward(from: 0.0);
   }
 }
