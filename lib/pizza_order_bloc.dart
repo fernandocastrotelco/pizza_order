@@ -37,15 +37,18 @@ class PizzaSizeState {
   }
 }
 
+const INITIAL_TOTAL = 15;
+
 class PizzaOrderBLoC extends ChangeNotifier {
   final listIngredients = <Ingredient>[];
-  final notifierTotal = ValueNotifier(15);
+  final notifierTotal = ValueNotifier(INITIAL_TOTAL);
   final notifierDeletedIngredient = ValueNotifier<Ingredient>(null);
   final notifierFocused = ValueNotifier(false);
   final notifierPizzaSize =
       ValueNotifier<PizzaSizeState>(PizzaSizeState(PizzaSizeValue.m));
   final notifierPizzaBoxAnimation = ValueNotifier(false);
   final notifierImagePizza = ValueNotifier<PizzaMetadata>(null);
+  final notifierCartIconAnimation = ValueNotifier(0);
 
   void addListIngredient(Ingredient ingredient) {
     listIngredients.add(ingredient);
@@ -74,6 +77,9 @@ class PizzaOrderBLoC extends ChangeNotifier {
   void reset() {
     notifierPizzaBoxAnimation.value = false;
     notifierImagePizza.value = null;
+    listIngredients.clear();
+    notifierTotal.value = INITIAL_TOTAL;
+    notifierCartIconAnimation.value++;
   }
 
   void startPizzaBoxAnimation() {

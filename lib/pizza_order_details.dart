@@ -9,6 +9,7 @@ import 'package:pizza_order/pizza_order_bloc.dart';
 import 'package:pizza_order/pizza_order_provider.dart';
 import 'package:pizza_order/pizza_size_button.dart';
 
+import 'pizza_cart_icon.dart';
 import 'pizza_ingredients.dart';
 
 const _pizzaCartSize = 55.0;
@@ -33,11 +34,7 @@ class _PizzaOrderDetailsState extends State<PizzaOrderDetails> {
           backgroundColor: Colors.white,
           elevation: 0,
           actions: [
-            IconButton(
-              icon: Icon(Icons.add_shopping_cart_outlined),
-              onPressed: () {},
-              color: Colors.brown,
-            )
+            PizzaCartIcon()
           ],
         ),
         body: Stack(children: [
