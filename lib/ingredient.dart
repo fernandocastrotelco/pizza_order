@@ -12,10 +12,10 @@ final ingredients = const <Ingredient>[
   Ingredient('assets/chili.png',
   'assets/chili_unit.png',
    <Offset>[
-    Offset(0.2, 0.2),
-    Offset(0.6, 0.2),
+    Offset(0.35, 0.35),
+    Offset(0.58, 0.25),
     Offset(0.4, 0.25),
-    Offset(0.5, 0.3),
+    Offset(0.5, 0.4),
     Offset(0.4, 0.65),
   ]),
   Ingredient('assets/mushroom.png', 
